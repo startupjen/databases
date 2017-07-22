@@ -4,25 +4,18 @@ module.exports = {
   messages: {
     // a function which handles a get request for all messages
     get: function (req, res) {
-      console.log('sup dude');
-      
-      //calls model to get all the messages
-      //returns with all the messages 
-
-      models.messages.get();
-      res.send('bloop');
-
-
-
+      console.log('Controllers: message.get()');
+      models.messages.get()
+        .then( (messages) => {
+          let returnObject = { 'results': messages };
+          res.send(JSON.stringify(returnObject));
+        });
     },
     // a function which handles posting a message to the database 
     post: function (req, res) {
-      console.log('heyo');
-      //res.writeHead(200);
-      res.send('wheeeee');
-
-      models.messages.post();
-    } 
+      models.messages.post(req, res)
+        .then( (successMessage) => res.end(successMessage) );
+    }
   },
 
   users: {
@@ -31,4 +24,3 @@ module.exports = {
     post: function (req, res) {}
   }
 };
-

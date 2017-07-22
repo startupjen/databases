@@ -1,30 +1,37 @@
 var db = require('../db');
+let Promise = require('bluebird');
 
 module.exports = {
   messages: {
     // a function which produces all the messages
     get: function () {
-      db.query('select * from messages', function(error, results, fields) {
-        if (error) { console.log('got error ', error); }
-        console.log('I AM SUCCESSFUL');
-        //console.log('results are', results);
-        //console.log('type of ', typeof results);
+      return new Promise( (resolve, reject) => {
+        db.query('select * from messages', function(error, messages, fields) {
+          if (error) { 
+            console.log('got error ', error); 
+            rejet(error);
+          } else {
+            console.log('Models: messages.get() query');
+            resolve(messages);
+          }
+        });
       });
     },   
     // a function which can be used to insert a message into the database
-    post: function () {
-      console.log('sup im in models post now');
-      let aPost = {
-        user: 'wheeeee',
-        message: 'this is an awesome message',
-        room: 'some lobby'
-      };
-      db.query('INSERT INTO posts ?', aPost, function(error, results, fields) {
-        console.log('i got into the insert query!!!');
-        console.log('i got an error', error);
-          
-      });
-    } 
+    post: function (req, res) {
+      return new Promise( (resolve, reject) => {
+        let insert = `INSERT INTO messages(username, text, roomname) VALUES ('${req.body.username}','${req.body.text}','${req.body.roomname}');`;
+        db.query(insert, function(error, results, fields) {
+          if (error) {
+            console.log('i got an error', error);
+            reject(error);
+          } else { 
+            console.log('successful post');
+            resolve('Message posting successful');
+          }
+        });
+      }); 
+    }
   },
 
   users: {
