@@ -12,6 +12,10 @@ CREATE TABLE messages (
   PRIMARY KEY ( messageID )
 );
 
+INSERT INTO messages (user,message,room)
+  VALUES
+  ('someuser', 'heyo this is message', 'lobby');
+
 /* Create other tables and define schemas for them here! */
 
 
