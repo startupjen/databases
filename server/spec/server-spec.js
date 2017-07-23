@@ -29,11 +29,11 @@ describe('Persistent Node Chat Server', function() {
 
   it('Should insert posted messages to the DB', function(done) {
     // Post the user to the chat server.
-    request({
-      method: 'POST',
-      uri: 'http://127.0.0.1:3000/classes/users',
-      json: { username: 'Valjean' }
-    }, function () {
+    // request({
+    //   method: 'POST',
+    //   uri: 'http://127.0.0.1:3000/classes/users',
+    //   json: { username: 'Valjean' }
+    // }, function () {
       // Post a message to the node chat server:
       request({
         method: 'POST',
@@ -51,8 +51,8 @@ describe('Persistent Node Chat Server', function() {
         // your message table, since this is schema-dependent.
 
         // JEN: MIGHT HAVE TO CHANGE QUERY ARGS
-        var queryString = 'SELECT * FROM messages';
-        var queryArgs = [];
+        var queryString = 'SELECT * FROM messages WHERE username = ?';
+        var queryArgs = ['Valjean'];
 
 
         dbConnection.query(queryString, queryArgs, function(err, results) {
